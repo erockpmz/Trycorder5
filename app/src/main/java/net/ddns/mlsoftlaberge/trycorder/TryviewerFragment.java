@@ -397,6 +397,7 @@ public class TryviewerFragment extends Fragment {
         Log.d("Files", "Path: " + path);
         File f = new File(path);
         File file[] = f.listFiles();
+        if (file == null) file = new File[0];
         Log.d("Files", "Size: "+ file.length);
         for (int i=0; i < file.length; i++)
         {
@@ -450,8 +451,8 @@ public class TryviewerFragment extends Fragment {
     /**
      * Create a file Uri for saving an image or video
      */
-    private static Uri getOutputMediaFileUri(int type) {
-        return Uri.fromFile(getOutputMediaFile(type));
+    private Uri getOutputMediaFileUri(int type) {
+        return net.ddns.mlsoftlaberge.trycorder.utils.FileUtils.getUriForFile(getActivity(), getOutputMediaFile(type));
     }
 
     /**
@@ -504,6 +505,7 @@ public class TryviewerFragment extends Fragment {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);  // create a file to save the picture
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
+        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
         // start the image capture Intent
         startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
     }
@@ -514,6 +516,7 @@ public class TryviewerFragment extends Fragment {
         Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
         fileUri = getOutputMediaFileUri(MEDIA_TYPE_VIDEO);  // create a file to save the video
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);  // set the image file name
+        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
         intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1); // set the video image quality to high
         // start the Video Capture Intent
         startActivityForResult(intent, CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);

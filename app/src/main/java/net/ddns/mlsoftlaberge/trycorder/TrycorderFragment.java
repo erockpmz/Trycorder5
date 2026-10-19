@@ -2918,7 +2918,7 @@ public class TrycorderFragment extends Fragment
         File file = FileUtils.getOutputMediaFile(FileUtils.MEDIA_TYPE_IMAGE);
         Uri imageFileUri = Uri.fromFile(file);
         try {
-            OutputStream imageFileOS = getActivity().getContentResolver().openOutputStream(imageFileUri);
+            OutputStream imageFileOS = new java.io.FileOutputStream(file);
             imageFileOS.write(data);
             imageFileOS.flush();
             imageFileOS.close();
@@ -3006,8 +3006,9 @@ public class TrycorderFragment extends Fragment
         switchviewer(5);
         // create Intent to take a picture and return control to the calling application
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        fileUri = FileUtils.getOutputMediaFileUri(FileUtils.MEDIA_TYPE_IMAGE);  // create a file to save the picture
+        fileUri = FileUtils.getOutputMediaFileUri(getActivity(), FileUtils.MEDIA_TYPE_IMAGE);  // create a file to save the picture
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
+        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
         // start the image capture Intent
         startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
     }
@@ -3016,8 +3017,9 @@ public class TrycorderFragment extends Fragment
         say("Open Video application");
         //create new Intent
         Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-        fileUri = FileUtils.getOutputMediaFileUri(FileUtils.MEDIA_TYPE_VIDEO);  // create a file to save the video
+        fileUri = FileUtils.getOutputMediaFileUri(getActivity(), FileUtils.MEDIA_TYPE_VIDEO);  // create a file to save the video
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);  // set the image file name
+        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
         intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1); // set the video image quality to high
         // start the Video Capture Intent
         startActivityForResult(intent, CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);

@@ -22,7 +22,9 @@ package net.ddns.mlsoftlaberge.trycorder.utils;
 *        limitations under the License.
 */
 
+import android.content.Context;
 import android.net.Uri;
+import androidx.core.content.FileProvider;
 import android.os.Environment;
 import android.util.Log;
 
@@ -47,6 +49,20 @@ public class FileUtils {
      */
     public static Uri getOutputMediaFileUri(int type) {
         return Uri.fromFile(getOutputMediaFile(type));
+    }
+
+    /**
+     * Create a content Uri (through our FileProvider) for saving an image or video,
+     * safe to hand to another application on Android 7+
+     */
+    public static Uri getOutputMediaFileUri(Context context, int type) {
+        File file = getOutputMediaFile(type);
+        if (file == null) return null;
+        return getUriForFile(context, file);
+    }
+
+    public static Uri getUriForFile(Context context, File file) {
+        return FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", file);
     }
 
     /**

@@ -235,38 +235,31 @@ public class TrycorderActivity extends FragmentActivity implements
     // ==========================================================================
 
     private void askpermissions() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_WIFI_STATE) != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_NETWORK_STATE) != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, Manifest.permission.GET_TASKS) != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_CONTACTS) != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_BOOT_COMPLETED) != PackageManager.PERMISSION_GRANTED
-                ) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{
-                            Manifest.permission.CAMERA,
-                            Manifest.permission.RECORD_AUDIO,
-                            Manifest.permission.INTERNET,
-                            Manifest.permission.ACCESS_WIFI_STATE,
-                            Manifest.permission.ACCESS_NETWORK_STATE,
-                            Manifest.permission.READ_EXTERNAL_STORAGE,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                            Manifest.permission.ACCESS_COARSE_LOCATION,
-                            Manifest.permission.ACCESS_FINE_LOCATION,
-                            Manifest.permission.READ_PHONE_STATE,
-                            Manifest.permission.GET_TASKS,
-                            Manifest.permission.READ_CONTACTS,
-                            Manifest.permission.WRITE_CONTACTS,
-                            Manifest.permission.RECEIVE_BOOT_COMPLETED
-                    }, 1);
+        java.util.ArrayList<String> wanted = new java.util.ArrayList<>();
+        wanted.add(Manifest.permission.CAMERA);
+        wanted.add(Manifest.permission.RECORD_AUDIO);
+        wanted.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+        wanted.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        wanted.add(Manifest.permission.READ_PHONE_STATE);
+        wanted.add(Manifest.permission.READ_CONTACTS);
+        wanted.add(Manifest.permission.WRITE_CONTACTS);
+        if (android.os.Build.VERSION.SDK_INT >= 33) {
+            wanted.add(Manifest.permission.READ_MEDIA_IMAGES);
+            wanted.add(Manifest.permission.READ_MEDIA_VIDEO);
+            wanted.add(Manifest.permission.READ_MEDIA_AUDIO);
+            wanted.add(Manifest.permission.POST_NOTIFICATIONS);
+        } else {
+            wanted.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+            if (android.os.Build.VERSION.SDK_INT <= 28) {
+                wanted.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            }
+        }
+        java.util.ArrayList<String> missing = new java.util.ArrayList<>();
+        for (String p : wanted) {
+            if (ActivityCompat.checkSelfPermission(this, p) != PackageManager.PERMISSION_GRANTED) missing.add(p);
+        }
+        if (!missing.isEmpty()) {
+            ActivityCompat.requestPermissions(this, missing.toArray(new String[0]), 1);
         }
     }
 
