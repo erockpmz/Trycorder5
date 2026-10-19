@@ -47,7 +47,7 @@ import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
-import android.support.v7.app.NotificationCompat;
+import androidx.core.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -193,13 +193,24 @@ public class TrycorderService extends Service implements RecognitionListener {
 
     }
 
+    private static final String CHANNEL_ID = "trycorder_service";
+
     private Notification mNotification=null;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if(mNotification==null) {
             mNotification = getNotification("Starting...");
-            startForeground(NOTIFICATION_ID, mNotification);
+            try {
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+                    startForeground(NOTIFICATION_ID, mNotification,
+                            android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE);
+                } else {
+                    startForeground(NOTIFICATION_ID, mNotification);
+                }
+            } catch (RuntimeException e) {
+                Log.d("service", "Cant start foreground: " + e);
+            }
             Toast.makeText(this, "Trycorder Service Started.", Toast.LENGTH_LONG).show();
         }
         return START_STICKY;
@@ -223,9 +234,17 @@ public class TrycorderService extends Service implements RecognitionListener {
     private Notification getNotification(String text){
         PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0,
                 new Intent(getApplicationContext(), TrycorderActivity.class),
-                PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
-        Notification notification = new Notification.Builder(getApplicationContext())
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            if (nm.getNotificationChannel(CHANNEL_ID) == null) {
+                nm.createNotificationChannel(new android.app.NotificationChannel(
+                        CHANNEL_ID, "Trycorder service", NotificationManager.IMPORTANCE_LOW));
+            }
+        }
+
+        Notification notification = new Notification.Builder(getApplicationContext(), CHANNEL_ID)
                 .setContentTitle("Trycorder " + deviceName)
                 .setContentText("Talk Server running on "+mFetcher.fetch_ip_address()+":"+SERVERPORT)
                 .setContentIntent(pi)

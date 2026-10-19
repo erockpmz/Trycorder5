@@ -30,9 +30,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 import android.view.View;
 
 import net.ddns.mlsoftlaberge.trycorder.R;
@@ -101,7 +101,7 @@ public class TryclientActivity extends FragmentActivity implements TryclientFrag
     @Override
     public void onResume() {
         super.onResume();
-        registerReceiver(broadcastReceiver, new IntentFilter(TrycorderService.BROADCAST_ACTION));
+        androidx.core.content.ContextCompat.registerReceiver(this, broadcastReceiver, new IntentFilter(TrycorderService.BROADCAST_ACTION), androidx.core.content.ContextCompat.RECEIVER_NOT_EXPORTED);
     }
 
     @Override

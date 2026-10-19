@@ -15,3 +15,7 @@
 /*/*.log
 /*/*.csv
 /*/try*.txt
+
+local.properties
+build/
+.gradle/

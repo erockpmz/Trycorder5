@@ -46,10 +46,10 @@ import android.provider.ContactsContract.RawContacts;
 import android.provider.ContactsContract.Data;
 
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
+import androidx.fragment.app.Fragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
