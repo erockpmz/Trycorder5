@@ -1259,7 +1259,10 @@ public class TrycorderService extends Service implements RecognitionListener {
         listpost();
         saypost("Added "+ip+" - "+newname);
         informActivity("iplist",ip);
-        Toast.makeText(this, "New IP found: "+ip, Toast.LENGTH_LONG).show();
+        if (android.preference.PreferenceManager.getDefaultSharedPreferences(this)
+                .getBoolean("pref_key_show_new_ip", false)) {
+            Toast.makeText(this, "New IP found: "+ip, Toast.LENGTH_LONG).show();
+        }
     }
 
     public void listpost() {

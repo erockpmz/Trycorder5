@@ -71,6 +71,11 @@
             android:title="Replay Sent"
             android:defaultValue="false" />
         <CheckBoxPreference
+            android:key="pref_key_show_new_ip"
+            android:summary="Pop up a message each time a device is found on the network"
+            android:title="New IP alerts"
+            android:defaultValue="false"/>
+        <CheckBoxPreference
             android:key="pref_key_auto_boot"
             android:summary="Determine if we start talk server at boot"
             android:title="Auto Boot"
