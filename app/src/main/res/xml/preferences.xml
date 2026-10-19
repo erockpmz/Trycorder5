@@ -72,8 +72,8 @@
             android:defaultValue="false" />
         <CheckBoxPreference
             android:key="pref_key_show_new_ip"
-            android:summary="Pop up a message each time a device is found on the network"
-            android:title="New IP alerts"
+            android:summary="Pop up messages when the service starts or stops and when a device is found on the network"
+            android:title="Service and network alerts"
             android:defaultValue="false"/>
         <CheckBoxPreference
             android:key="pref_key_auto_boot"

@@ -151,7 +151,7 @@ public class TrycorderService extends Service implements RecognitionListener {
     public void onCreate() {
         super.onCreate();
         // Let it continue running until it is stopped.
-        Toast.makeText(this, "Trycorder Service Created ...", Toast.LENGTH_LONG).show();
+        if (alertsEnabled()) Toast.makeText(this, "Trycorder Service Created ...", Toast.LENGTH_LONG).show();
 
         mFetcher=new Fetcher(getApplicationContext());
 
@@ -193,6 +193,11 @@ public class TrycorderService extends Service implements RecognitionListener {
 
     }
 
+    // service start/stop and network discovery popups are off unless enabled in Setup
+    private boolean alertsEnabled() {
+        return PreferenceManager.getDefaultSharedPreferences(this).getBoolean("pref_key_show_new_ip", false);
+    }
+
     private static final String CHANNEL_ID = "trycorder_service";
 
     private Notification mNotification=null;
@@ -211,7 +216,7 @@ public class TrycorderService extends Service implements RecognitionListener {
             } catch (RuntimeException e) {
                 Log.d("service", "Cant start foreground: " + e);
             }
-            Toast.makeText(this, "Trycorder Service Started.", Toast.LENGTH_LONG).show();
+            if (alertsEnabled()) Toast.makeText(this, "Trycorder Service Started.", Toast.LENGTH_LONG).show();
         }
         return START_STICKY;
     }
@@ -225,7 +230,7 @@ public class TrycorderService extends Service implements RecognitionListener {
         stopserver();
         stopForeground(true);
         super.onDestroy();
-        Toast.makeText(this, "Trycorder Service Destroyed", Toast.LENGTH_LONG).show();
+        if (alertsEnabled()) Toast.makeText(this, "Trycorder Service Destroyed", Toast.LENGTH_LONG).show();
     }
 
     // ============================================================================
@@ -1259,8 +1264,7 @@ public class TrycorderService extends Service implements RecognitionListener {
         listpost();
         saypost("Added "+ip+" - "+newname);
         informActivity("iplist",ip);
-        if (android.preference.PreferenceManager.getDefaultSharedPreferences(this)
-                .getBoolean("pref_key_show_new_ip", false)) {
+        if (alertsEnabled()) {
             Toast.makeText(this, "New IP found: "+ip, Toast.LENGTH_LONG).show();
         }
     }
