@@ -17,8 +17,8 @@ android {
         applicationId "net.ddns.mlsoftlaberge.trycorder"
         minSdk 24
         targetSdk 34
-        versionCode 524
-        versionName "5.2.4-s23"
+        versionCode 525
+        versionName "5.2.5-s23"
     }
     signingConfigs {
         release {

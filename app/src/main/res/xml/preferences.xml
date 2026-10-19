@@ -52,9 +52,9 @@
             android:defaultValue="true" />
         <CheckBoxPreference
             android:key="pref_key_send_remote"
-            android:summary="Determine if we send to Remote Net"
+            android:summary="Connect to the original author's server (mlsoftlaberge.ddns.net) and send what you say or type there"
             android:title="Send Remote"
-            android:defaultValue="true" />
+            android:defaultValue="false" />
         <CheckBoxPreference
             android:key="pref_key_exec_local"
             android:summary="Determine if we exec from Local Net"
@@ -62,9 +62,9 @@
             android:defaultValue="true" />
         <CheckBoxPreference
             android:key="pref_key_exec_remote"
-            android:summary="Determine if we exec from Remote Net"
+            android:summary="Let that remote server trigger commands on this phone"
             android:title="Exec Remote"
-            android:defaultValue="true" />
+            android:defaultValue="false" />
         <CheckBoxPreference
             android:key="pref_key_replay_sent"
             android:summary="Determine if we replay the sent text locally"

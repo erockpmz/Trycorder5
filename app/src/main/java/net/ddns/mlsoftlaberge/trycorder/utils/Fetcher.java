@@ -95,34 +95,20 @@ public class Fetcher {
     // =================== fetch telephone status =======================
 
     public String fetch_tel_status() {
+        // only non-identifying network info: no IMEI, phone number, SIM serial or subscriber id
         Context cx = context;
-        String result = null;
         TelephonyManager tm = (TelephonyManager) cx
-                .getSystemService(Context.TELEPHONY_SERVICE);//
+                .getSystemService(Context.TELEPHONY_SERVICE);
         String str = "";
-        str += "DeviceId(IMEI) = " + tm.getDeviceId() + "\n";
-        str += "DeviceSoftwareVersion = " + tm.getDeviceSoftwareVersion()
-                + "\n";
-        str += "Line1Number = " + tm.getLine1Number() + "\n";
-        str += "NetworkCountryIso = " + tm.getNetworkCountryIso() + "\n";
-        str += "NetworkOperator = " + tm.getNetworkOperator() + "\n";
-        str += "NetworkOperatorName = " + tm.getNetworkOperatorName() + "\n";
-        str += "NetworkType = " + tm.getNetworkType() + "\n";
-        str += "PhoneType = " + tm.getPhoneType() + "\n";
-        str += "SimCountryIso = " + tm.getSimCountryIso() + "\n";
-        str += "SimOperator = " + tm.getSimOperator() + "\n";
-        str += "SimOperatorName = " + tm.getSimOperatorName() + "\n";
-        str += "SimSerialNumber = " + tm.getSimSerialNumber() + "\n";
-        str += "SimState = " + tm.getSimState() + "\n";
-        str += "SubscriberId(IMSI) = " + tm.getSubscriberId() + "\n";
-        str += "VoiceMailNumber = " + tm.getVoiceMailNumber() + "\n";
-
-        int mcc = cx.getResources().getConfiguration().mcc;
-        int mnc = cx.getResources().getConfiguration().mnc;
-        str += "IMSI MCC (Mobile Country Code):" + String.valueOf(mcc) + "\n";
-        str += "IMSI MNC (Mobile Network Code):" + String.valueOf(mnc) + "\n";
-        result = str;
-        return result;
+        try {
+            str += "NetworkCountryIso = " + tm.getNetworkCountryIso() + "\n";
+            str += "NetworkOperatorName = " + tm.getNetworkOperatorName() + "\n";
+            str += "PhoneType = " + tm.getPhoneType() + "\n";
+            str += "SimState = " + tm.getSimState() + "\n";
+        } catch (Exception e) {
+            str += "Telephony info unavailable\n";
+        }
+        return str;
     }
 
     // ================ fetch process info ===================

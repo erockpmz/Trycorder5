@@ -240,7 +240,6 @@ public class TrycorderActivity extends FragmentActivity implements
         wanted.add(Manifest.permission.RECORD_AUDIO);
         wanted.add(Manifest.permission.ACCESS_COARSE_LOCATION);
         wanted.add(Manifest.permission.ACCESS_FINE_LOCATION);
-        wanted.add(Manifest.permission.READ_PHONE_STATE);
         wanted.add(Manifest.permission.READ_CONTACTS);
         wanted.add(Manifest.permission.WRITE_CONTACTS);
         if (android.os.Build.VERSION.SDK_INT >= 33) {

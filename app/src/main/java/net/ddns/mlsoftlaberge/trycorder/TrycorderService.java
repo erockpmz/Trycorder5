@@ -166,9 +166,9 @@ public class TrycorderService extends Service implements RecognitionListener {
         deviceName = sharedPref.getString("pref_key_device_name", "Trycorder");
         isMaster = sharedPref.getBoolean("pref_key_ismaster", true);
         sendLocal = sharedPref.getBoolean("pref_key_send_local", true);
-        sendRemote = sharedPref.getBoolean("pref_key_send_remote", true);
+        sendRemote = sharedPref.getBoolean("pref_key_send_remote", false);
         execLocal = sharedPref.getBoolean("pref_key_exec_local", true);
-        execRemote = sharedPref.getBoolean("pref_key_exec_remote", true);
+        execRemote = sharedPref.getBoolean("pref_key_exec_remote", false);
         autoBoot = sharedPref.getBoolean("pref_key_auto_boot", false);
         autoStop = sharedPref.getBoolean("pref_key_auto_stop", true);
         debugMode = sharedPref.getBoolean("pref_key_debug_mode", false);
@@ -554,6 +554,11 @@ public class TrycorderService extends Service implements RecognitionListener {
     private Socket starshipSocket=null;
 
     public void initstarship() {
+        // the starship network is the original author's remote server: connect only if the user opted in
+        if (!sendRemote && !execRemote) {
+            say("Remote starship network is disabled");
+            return;
+        }
         say("Initialize the starship network");
         // start the starship thread
         Thread starshipThread = new Thread(new StarshipThread());
